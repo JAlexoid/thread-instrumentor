@@ -1,3 +1,19 @@
+/*
+ *    Copyright 2015 Aleksandr Panzin (alex@activelogic.eu)
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package eu.activelogic.instrumentor.thread.vm;
 
 import java.io.ByteArrayOutputStream;
@@ -12,12 +28,15 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 /**
- * 
+ * A Java VM agent to attach hooks to Thread creation and execution.
  * 
  * @author Aleksandr Panzin
  */
 public class Instrumentor implements ClassFileTransformer {
 
+	/**
+	 * @see java.lang.instrument
+	 */
 	public static void premain(String agentArgs, Instrumentation inst) {
 		try {
 			inst.addTransformer(new Instrumentor(), true);
@@ -38,6 +57,10 @@ public class Instrumentor implements ClassFileTransformer {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.instrument.ClassFileTransformer#transform(java.lang.ClassLoader, java.lang.String, java.lang.Class, java.security.ProtectionDomain, byte[])
+	 */
 	public byte[] transform(ClassLoader cl, String name, Class<?> clazz, ProtectionDomain pD, byte[] clazzBytes) throws IllegalClassFormatException {
 		try {
 			if (name.equals("java/lang/Thread")) {
