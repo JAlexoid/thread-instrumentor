@@ -2,7 +2,7 @@
 Java Thread Interceptor VM Plugin
 
 
-This is a simple plugin for tracking Thread creations and running of the threads.
+This is a simple plugin for tracking Thread creations and `Thread.start()` invocations.
 
 To use simply register your implementation of `ThreadCallInterceptor` with `ThreadInterceptor.registerThreadInterceptor`.
 And add the libraries to the JVM startup(Oracle's and OpenJDK version shown):
