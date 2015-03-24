@@ -27,6 +27,12 @@ import static org.objectweb.asm.Opcodes.ASM5;
 
 public class ThreadClassEnchanser extends ClassVisitor {
 
+	private static final String CONSTRUCTOR_THREAD_GROUP_RUNNABLE_STRING_LONG = "(Ljava/lang/ThreadGroup;Ljava/lang/Runnable;Ljava/lang/String;J)V";
+	private static final String CONSTRUCTOR_THREAD_GROUP_RUNNABLE_STRING = "(Ljava/lang/ThreadGroup;Ljava/lang/Runnable;Ljava/lang/String;)V";
+	private static final String CONSTRUCTOR_THREAD_GROUP_RUNNABLE = "(Ljava/lang/ThreadGroup;Ljava/lang/Runnable;)V";
+	private static final String CONSTRUCTOR_RUNNABLE_STRING = "(Ljava/lang/Runnable;Ljava/lang/String;)V";
+	private static final String CONSTRUCTOR_RUNNABLE = "(Ljava/lang/Runnable;)V";
+	private static final String CONSTRICTOR_NAME = "<init>";
 	private final ClassVisitor cv;
 
 	public ThreadClassEnchanser(ClassVisitor cv) {
@@ -43,15 +49,15 @@ public class ThreadClassEnchanser extends ClassVisitor {
 			return null;
 		if (name.equals("start")) {
 			return new ThreadStartAdviceCreator(mv, access, name, desc);
-		} else if (name.equals("<init>")) {
-			if (desc.equals("(Ljava/lang/Runnable;)V")
-					|| desc.equals("(Ljava/lang/Runnable;Ljava/lang/String;)V")) {
+		} else if (name.equals(CONSTRICTOR_NAME)) {
+			if (desc.equals(CONSTRUCTOR_RUNNABLE)
+					|| desc.equals(CONSTRUCTOR_RUNNABLE_STRING)) {
 				ThreadConstructorAdviceCreator ret = new ThreadConstructorAdviceCreator(
 						mv, access, name, desc, 1);
 				return ret;
-			} else if (desc.equals("(Ljava/lang/ThreadGroup;Ljava/lang/Runnable;)V")
-					|| desc.equals("(Ljava/lang/ThreadGroup;Ljava/lang/Runnable;Ljava/lang/String;)V")
-					|| desc.equals("(Ljava/lang/ThreadGroup;Ljava/lang/Runnable;Ljava/lang/String;J)V")) {
+			} else if (desc.equals(CONSTRUCTOR_THREAD_GROUP_RUNNABLE)
+					|| desc.equals(CONSTRUCTOR_THREAD_GROUP_RUNNABLE_STRING)
+					|| desc.equals(CONSTRUCTOR_THREAD_GROUP_RUNNABLE_STRING_LONG)) {
 				ThreadConstructorAdviceCreator ret = new ThreadConstructorAdviceCreator(
 						mv, access, name, desc, 2);
 				return ret;

@@ -23,6 +23,9 @@ import org.objectweb.asm.commons.AdviceAdapter;
 
 public class ThreadStartAdviceCreator extends AdviceAdapter {
 
+	private static final String START_METHOD_SIG = "(Ljava/lang/Thread;)V";
+	private static final String START_METHOD = "callStart";
+
 	public ThreadStartAdviceCreator(MethodVisitor mv, int access, String name,
 			String desc) {
 		super(Opcodes.ASM5, mv, access, name, desc);
@@ -32,8 +35,8 @@ public class ThreadStartAdviceCreator extends AdviceAdapter {
 	protected void onMethodEnter() {
 		mv.visitVarInsn(Opcodes.ALOAD, 0);
 		mv.visitMethodInsn(Opcodes.INVOKESTATIC,
-				Type.getInternalName(ThreadInterceptor.class), "callStart",
-				"(Ljava/lang/Thread;)V", false);
+				Type.getInternalName(ThreadInterceptor.class), START_METHOD,
+				START_METHOD_SIG, false);
 	}
 
 	@Override

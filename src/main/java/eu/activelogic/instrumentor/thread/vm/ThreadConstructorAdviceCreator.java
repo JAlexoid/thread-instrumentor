@@ -23,6 +23,8 @@ import org.objectweb.asm.commons.AdviceAdapter;
 
 public class ThreadConstructorAdviceCreator extends AdviceAdapter {
 
+	private static final String CREATE_THREAD_METHOD_SIG = "(Ljava/lang/Thread;Ljava/lang/Runnable;)V";
+	private static final String CREATE_THREAD_METHOD = "createThread";
 	private final int runnableIndex;
 
 	public ThreadConstructorAdviceCreator(MethodVisitor mv, int access,
@@ -47,8 +49,8 @@ public class ThreadConstructorAdviceCreator extends AdviceAdapter {
 			mv.visitVarInsn(Opcodes.ALOAD, runnableIndex);
 
 		mv.visitMethodInsn(Opcodes.INVOKESTATIC,
-				Type.getInternalName(ThreadInterceptor.class), "createThread",
-				"(Ljava/lang/Thread;Ljava/lang/Runnable;)V", false);
+				Type.getInternalName(ThreadInterceptor.class), CREATE_THREAD_METHOD,
+				CREATE_THREAD_METHOD_SIG, false);
 	}
 
 	public int getRunnableIndex() {

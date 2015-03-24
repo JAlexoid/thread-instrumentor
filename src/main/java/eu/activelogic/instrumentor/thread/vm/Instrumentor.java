@@ -18,10 +18,7 @@ package eu.activelogic.instrumentor.thread.vm;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.lang.instrument.ClassDefinition;
-import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
-import java.lang.instrument.Instrumentation;
+import java.lang.instrument.*;
 import java.security.ProtectionDomain;
 
 import org.objectweb.asm.ClassReader;
@@ -34,6 +31,9 @@ import org.objectweb.asm.ClassWriter;
  */
 public class Instrumentor implements ClassFileTransformer {
 
+	public static final String JAVA_LANG_THREAD = "java/lang/Thread";
+	public static final String JAVA_LANG_THREAD_CLASS = "/java/lang/Thread.class";
+
 	/**
 	 * @see java.lang.instrument
 	 */
@@ -41,7 +41,7 @@ public class Instrumentor implements ClassFileTransformer {
 		try {
 			inst.addTransformer(new Instrumentor(), true);
 
-			InputStream in = Instrumentor.class.getResourceAsStream("/java/lang/Thread.class");
+			InputStream in = Instrumentor.class.getResourceAsStream(JAVA_LANG_THREAD_CLASS);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream(in.available());
 			byte[] read = new byte[255];
 			int ready = 0;
