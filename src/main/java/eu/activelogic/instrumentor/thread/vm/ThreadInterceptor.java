@@ -16,7 +16,8 @@
 
 package eu.activelogic.instrumentor.thread.vm;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 /**
@@ -26,7 +27,7 @@ import java.util.ArrayList;
  */
 public class ThreadInterceptor {
 
-	private static ArrayList<ThreadCallInterceptor> interceptors = new ArrayList<ThreadCallInterceptor>();
+	private static List<ThreadCallInterceptor> interceptors = new CopyOnWriteArrayList<>();
 
 	public static void callStart(Thread t) {
 		for (ThreadCallInterceptor i : interceptors) {
