@@ -63,13 +63,11 @@ public class Instrumentor implements ClassFileTransformer {
 	 */
 	public byte[] transform(ClassLoader cl, String name, Class<?> clazz, ProtectionDomain pD, byte[] clazzBytes) throws IllegalClassFormatException {
 		try {
-			if (name.equals("java/lang/Thread")) {
-				System.out.println("Redefining Thread class");
+			if (JAVA_LANG_THREAD.equals(name)) {
 				ClassReader cr = new ClassReader(clazzBytes);
 				ClassWriter cw = new ClassWriter(0);
 				ThreadClassEnchanser ncv = new ThreadClassEnchanser(cw);
 				cr.accept(ncv, ClassReader.EXPAND_FRAMES);
-				System.out.println("Redefined Thread class");
 				return cw.toByteArray();
 			} else
 				return null;
