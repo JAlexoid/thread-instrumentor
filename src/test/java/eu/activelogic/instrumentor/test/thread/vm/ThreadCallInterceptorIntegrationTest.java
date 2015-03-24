@@ -178,4 +178,40 @@ public class ThreadCallInterceptorIntegrationTest {
 		new Thread(THREAD_NAME);
 	}
 
+	@Test
+	public void threadCallInterceptorRegistrationShouldNotCauseConcurrentModificationException() {
+
+		// Register an interceptor that sleeps for 500ms on THREAD_NAME
+		ThreadInterceptor
+				.registerThreadInterceptor(new ThreadCallInterceptor() {
+
+					@Override
+					public void createThread(Thread t, Runnable r) {
+						if (t.getName().equals(THREAD_NAME)) {
+							try {
+								Thread.sleep(550l);
+							} catch (InterruptedException e) {
+							}
+						}
+					}
+
+					@Override
+					public void callStart(Thread t) {
+					}
+				});
+
+		// An anonymous thread is created that adds another interceptor, while
+		// the interceptor above is in the event processing loop.
+		new Thread(() -> {
+			try {
+				Thread.sleep(100l);
+			} catch (InterruptedException e) {
+			}
+			ThreadInterceptor.registerThreadInterceptor(new MyInterceptor());
+		}).start();
+		// Cause the first interceptor to run (hopefully within ~50ms)
+		new Thread(THREAD_NAME);
+
+	}
+
 }
