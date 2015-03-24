@@ -24,6 +24,13 @@
 	<build>
 		<plugins>
 			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.6</version>
@@ -57,7 +64,8 @@
 					<includes>
 						<include>**/*IntegrationTest.java</include>
 					</includes>
-					<argLine>-javaagent:target/${project.build.finalName}-jar-with-dependencies.jar -Xbootclasspath/a:target/${project.build.finalName}-jar-with-dependencies.jar</argLine>
+					<argLine>-javaagent:target/${project.build.finalName}-jar-with-dependencies.jar
+						-Xbootclasspath/a:target/${project.build.finalName}-jar-with-dependencies.jar</argLine>
 				</configuration>
 				<executions>
 					<execution>
